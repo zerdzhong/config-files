@@ -1,66 +1,86 @@
-set nocompatible              " required
-filetype off                  " required
+" 开启文件类型侦测
+filetype on
+" 根据侦测到的不同类型加载对应的插件
+filetype plugin on
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
+" 让vimrc配置变更立即生效
+autocmd BufWritePost $MYVIMRC source $MYVIMRC
 
-call vundle#begin()
+" 开启实时搜索功能
+set incsearch
+" 搜索时大小写不敏感
+set ignorecase
+" 关闭兼容模式
+set nocompatible
+" vim 自身命令行模式智能补全
+set wildmenu
 
-Plugin 'gmarik/Vundle.vim'
+" 配色方案
+set background=dark
+colorscheme solarized
+" 设置状态栏主题风格
+let g:Powerline_colorscheme='solarized256'
 
-Plugin 'vim-scripts/indentpython.vim'
-Plugin 'tmhedberg/SimpylFold'
-Plugin 'altercation/vim-colors-solarized'
-" 目录结构
-Plugin 'scrooloose/nerdtree'
-Plugin 'jistr/vim-nerdtree-tabs'
-" 这个插件可以显示文件的Git增删状态
-Plugin 'Xuyuanp/nerdtree-git-plugin'
-" 全局搜索
-Plugin 'kien/ctrlp.vim'
-
-call vundle#end()            " required
-
-filetype plugin indent on    " required
-
-" Ctrl+N 打开/关闭
-map <C-n> :NERDTreeToggle<CR>
-" 当不带参数打开Vim时自动加载项目树
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-" 当所有文件关闭时关闭项目树窗格
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-" 不显示这些文件
-let NERDTreeIgnore=['\.pyc$', '\~$', 'node_modules'] "ignore files in NERDTree
-" 不显示项目树上额外的信息，例如帮助、提示什么的
-let NERDTreeMinimalUI=1
-
-let g:ctrlp_working_path_mode = 'ra'
-set wildignore+=*/tmp/*,*/node_modules/*,*.so,*.swp,*.zip     
-let g:ctrlp_custom_ignore = {'dir':  '\v[\/]\.(git|hg|svn)$', 'file': '\v\.(exe|so|dll)$'}
-
-set foldmethod=indent
-au BufWinLeave * silent mkview  " 保存文件的折叠状态
-au BufRead * silent loadview    " 恢复文件的折叠状态
-nnoremap <space> za             " 用空格来切换折叠状态
-
-set encoding=utf-8
-set number
-set clipboard=unnamed
-
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
-set autoindent
-set cindent
-
-set nowrap                      " Do not wrap long lines
-set nojoinspaces                " Prevents inserting two spaces after punctuation on a join (J)
-set splitright                  " Puts new vsplit windows to the right of the current
-set splitbelow                  " Puts new split windows to the bottom of the current
-"set matchpairs+=<:>             " Match, to be used with %
-set pastetoggle=<F12>           " pastetoggle (sane indentation on pastes)
-
-let python_highlight_all=1
+" 开启语法高亮功能
+syntax enable
+" 允许用指定语法高亮配色方案替换默认方案
 syntax on
 
+" 总是显示状态栏
+set laststatus=2
+" 显示光标当前位置
+set ruler
+" 开启行号显示
+set number
+" 高亮显示当前行/列
+set cursorline
+set cursorcolumn
+" 高亮显示搜索结果
+set hlsearch
+
+" 禁止折行
+set nowrap
+
+" 自适应不同语言的智能缩进
+filetype indent on
+" 将制表符扩展为空格
+set expandtab
+" 设置编辑时制表符占用空格数
+set tabstop=4
+" 设置格式化时制表符占用空格数
+set shiftwidth=4
+" 让 vim 把连续数量的空格视为一个制表符
+set softtabstop=4
+
+" 基于缩进或语法进行代码折叠
+"set foldmethod=indent
+set foldmethod=syntax
+" 启动 vim 时关闭折叠代码
+set nofoldenable
+
+" 设置NERDTree子窗口宽度
+let NERDTreeWinSize=32
+" 设置NERDTree子窗口位置
+let NERDTreeWinPos="right"
+" 显示隐藏文件
+let NERDTreeShowHidden=1
+" NERDTree 子窗口中不显示冗余帮助信息
+let NERDTreeMinimalUI=1
+" 删除文件时自动删除文件对应 buffer
+let NERDTreeAutoDeleteBuffer=1
+
+" vundle 环境设置
+filetype off
+set rtp+=~/.vim/bundle/Vundle.vim
+" vundle 管理的插件列表必须位于 vundle#begin() 和 vundle#end() 之间
+call vundle#begin()
+
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'Lokaltog/vim-powerline'
+Plugin 'octol/vim-cpp-enhanced-highlight'
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'scrooloose/nerdtree'
+
+" 插件列表结束
+call vundle#end()
+filetype plugin indent on
